@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Compacted Audio Loader · Basic demo</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			*{ box-sizing: border-box; margin: 0; padding: 0 }
+			body {
+				color: #ffffff;
+				font-family: tahoma;
+				font-size:13px;
+				background-color: #222;
+				margin: 0px;
+        background-image: url( debut_dark.png );
+			}
+		</style>
+	</head>
+	<body>
+
+<script>
+
+var request = new XMLHttpRequest();
+
+request.open( 'GET', 'file.mp3', true );
+request.responseType = 'arraybuffer';
+
+request.onload = function() {
+  processConcatenatedFile( request.response );
+}
+
+request.send();
+
+function processConcatenatedFile( data ) {
+
+  var bb = new DataView( data );
+  var offset = 0;
+
+  while( offset < bb.byteLength ) {
+
+    var length = bb.getUint32( offset, true );
+    offset += 4;
+    var sound = extractBuffer( data, offset, length );
+    offset += length;
+
+    createSoundWithBuffer( sound.buffer );
+
+  }
+
+}
+
+function extractBuffer( src, offset, length ) {
+
+  var dstU8 = new Uint8Array( length );
+  var srcU8 = new Uint8Array( src, offset, length );
+  dstU8.set( srcU8 );
+  return dstU8;
+
+} 
+
+function createSoundWithBuffer( buffer ) {
+  
+  var context = new webkitAudioContext();
+  var audioSource = context.createBufferSource();
+  audioSource.connect( context.destination );
+
+  context.decodeAudioData( buffer, function( res ) {
+    audioSource.buffer = res;
+    audioSource.noteOn( 0 );
+  } );
+
+}
+
+</script>
+
+	</body>
+</html>
