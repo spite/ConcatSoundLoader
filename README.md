@@ -4,7 +4,7 @@ Concatenated Sound Files Loader | Typed Arrays and Web Audio API
 
 ###Introduction ###
 
-Code from the post "[Loading sound files faster using Array Buffers and Web Audio API](http://local-clicktorelease.com/blog/loading-sounds-faster-using-html5-web-audio-api)".
+Code from the post "[Loading sound files faster using Array Buffers and Web Audio API](http://www.clicktorelease.com/blog/loading-sounds-faster-using-html5-web-audio-api)".
 
 #### License ####
 
